@@ -1,16 +1,17 @@
 const express = require('express');
 const app = express();
-const cors = require('cors');
-const { config } = require('./config');
+const cors = require("cors");
+const { config } = require('./config/index');
 
 //** Routes
 const routerPro = require('./routes/routerPro');
 
 //** Config Puerto
-const PORT = config.port;
+const PORT = 3000
 
 
 const db_obj = require('./config/db');
+const routerProd = require('./routes/routerPro');
 
 //** Conexion Knex
 const db = db_obj.client; 
@@ -19,6 +20,25 @@ const db = db_obj.client;
 app.use(cors(config.cors));
 app.use("/productos", require('./routes/routerPro'))
 
+//Settings
+app.use(express.json());
+app.use(express.urlencoded({ extended: true}));
+
+// routerProd(app);
+
+(async () => {
+    try{
+        create
+        await db.schema.createTable("productos", table => {
+            table.increments("id").primary(),
+            table.string("title"),
+            table.int("price"),
+            table.string("img")
+        })
+    }catch(error){
+        console.log(error)
+    }
+});
 
 (async () => {
     try{
@@ -58,17 +78,20 @@ app.use("/productos", require('./routes/routerPro'))
         let response = await db.from("productos").insert(data);
         console.log(response);
 
-        //create
-        // await db.schema.createTable("productos", table => {
-        //     table.increments("id").primary(),
-        //     table.string("title"),
-        //     table.int("price"),
-        //     table.string("img")
-        // })
     }catch(error){
         console.log(error)
     }
-})ñ
+});
+
+
+(async () => {
+    try{
+        let response = await db.from("productos");
+        console.log(response);
+    }catch(error){
+        console.log(error)
+    }
+});
 
 //routes home
 

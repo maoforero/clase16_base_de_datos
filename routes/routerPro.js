@@ -1,6 +1,6 @@
 const express = require('express');
-const { Router } = express();
-const routerProd = new Router;
+const { Router } = express;
+let routerProd = new Router;
 
 routerProd.get("/productos", (req, res, next) => {
     res.send("Productos");
